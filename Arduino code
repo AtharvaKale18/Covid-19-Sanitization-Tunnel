@@ -1,0 +1,70 @@
+#define trigger 9
+#define echo 8
+#define MOSFET 13
+#include <LiquidCrystal.h>
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+int red = 7;
+int green = 6; 
+
+ 
+float time=0,distance=0;
+ 
+void setup()
+{
+  lcd.begin(16,2);
+  Serial.begin(9600);
+
+ pinMode(trigger,OUTPUT);
+ pinMode(echo,INPUT);
+ pinMode(red,OUTPUT);
+ pinMode(green, OUTPUT);
+ pinMode(MOSFET,OUTPUT);
+
+ delay(500);
+}
+ 
+void loop()
+{
+ measure_distance();
+
+ if(distance<10)
+ {
+   digitalWrite(MOSFET,HIGH);
+   digitalWrite(green,LOW);
+   digitalWrite(red,HIGH);
+   lcd.clear();
+   lcd.setCursor(1, 0); lcd.print("HUMAN DETECTED");
+   lcd.setCursor(3, 1); lcd.print("PLEASE WAIT");
+   Serial.print("HUMAN DETECTED");
+   Serial.println();
+ }
+ else
+ {
+   digitalWrite(MOSFET,LOW);
+   digitalWrite(green,HIGH);
+   digitalWrite(red,LOW);
+   lcd.clear();
+   lcd.setCursor(2, 0); lcd.print("TUNNEL EMPTY");
+   lcd.setCursor(3, 1); lcd.print("YOU MAY GO");
+   Serial.print("TUNNEL EMPTY");
+   Serial.println();
+   
+ }
+
+ delay(500);
+}
+
+void measure_distance()
+{
+ digitalWrite(trigger,LOW);
+ delayMicroseconds(2);
+ digitalWrite(trigger,HIGH);
+ delayMicroseconds(10);
+ digitalWrite(trigger,LOW);
+ delayMicroseconds(2);
+ time=pulseIn(echo,HIGH);
+ 
+ distance=time*340/20000;
+}
