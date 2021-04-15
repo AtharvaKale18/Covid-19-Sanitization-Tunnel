@@ -4,30 +4,25 @@
 #include <LiquidCrystal.h>
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
 int red = 7;
 int green = 6; 
-
- 
 float time=0,distance=0;
  
 void setup()
 {
   lcd.begin(16,2);
   Serial.begin(9600);
-
- pinMode(trigger,OUTPUT);
- pinMode(echo,INPUT);
- pinMode(red,OUTPUT);
- pinMode(green, OUTPUT);
- pinMode(MOSFET,OUTPUT);
-
- delay(500);
+  pinMode(trigger,OUTPUT);
+  pinMode(echo,INPUT);
+  pinMode(red,OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(MOSFET,OUTPUT);
+  delay(500);
 }
  
 void loop()
 {
- measure_distance();
+   measure_distance();
 
  if(distance<10)
  {
@@ -53,10 +48,10 @@ void loop()
    
  }
 
- delay(500);
+   delay(500);
 }
-
-void measure_distance()
+ 
+ void measure_distance()
 {
  digitalWrite(trigger,LOW);
  delayMicroseconds(2);
